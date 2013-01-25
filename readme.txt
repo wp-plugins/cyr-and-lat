@@ -3,7 +3,7 @@ Contributors: necrowolf
 Tags: cyrillic, latin, l10n, russian, rustolat, slugs, translations, transliteration, media, georgian, european, diacritics, muiltilanguage
 Requires at least: 2.3
 Tested up to: 3.4.1
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Allows to use both "old" cyrillic and "new" latin slugs at the same time.
 
@@ -42,6 +42,9 @@ add_filter('cal_table', 'my_cyr_and_lat_table');
 `
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed minor bug
 
 = 1.0 =
 * Initial release

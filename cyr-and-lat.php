@@ -5,7 +5,7 @@ Plugin URI: http://necrowolf.nw-lab.com/web-2/cyr-and-lat-plugin/
 Description: Converts Cyrillic characters in post and term slugs to Latin characters. Useful for creating human-readable URLs. Allows to use both of cyrillic and latin slugs. Based on the plugin version 3.3.3. by Sol, Sergey Biryukov, Nikolay Karev, Dmitri Gogelia.
 Author: Artem Wolf
 Author URI: http://necrowolf.nw-lab.com
-Version: 1.0
+Version: 1.0.1
 */ 
 
 function cal_sanitize_title($title) {
@@ -110,7 +110,9 @@ function cal_schedule_conversion() {
 register_activation_hook(__FILE__, 'cal_schedule_conversion');
 
 function cal_use_cyrillic_alias($request){
-    $request['name'] = cal_sanitize_title(urldecode($request['name']));
+	if (isset($request['name'])){
+		$request['name'] = cal_sanitize_title(urldecode($request['name']));
+	}
     return $request;
 }
 add_filter('request','cal_use_cyrillic_alias');
