@@ -5,10 +5,10 @@ Plugin URI: http://necrowolf.nw-lab.com/web-2/cyr-and-lat-plugin/
 Description: Converts Cyrillic characters in post and term slugs to Latin characters. Useful for creating human-readable URLs. Allows to use both of cyrillic and latin slugs. Based on the plugin version 3.3.3. by Sol, Sergey Biryukov, Nikolay Karev, Dmitri Gogelia.
 Author: Artem Wolf
 Author URI: http://necrowolf.nw-lab.com
-Version: 1.0.1
+Version: 1.0.2
 */ 
 
-function cal_sanitize_title($title) {
+function cal_sanitize_title($title,$savesymbols = false) {
 	global $wpdb;
 
 	$iso9_table = array(
@@ -70,10 +70,12 @@ function cal_sanitize_title($title) {
 		if (function_exists('iconv')){
 			$title = iconv('UTF-8', 'UTF-8//TRANSLIT//IGNORE', $title);
 		}
-		$title = preg_replace("/[^A-Za-z0-9'_\-\.]/", '-', $title);
-		$title = preg_replace('/\-+/', '-', $title);
-		$title = preg_replace('/^-+/', '', $title);
-		$title = preg_replace('/-+$/', '', $title);
+		if (!$savesymbols) { 
+                    $title = preg_replace("/[^A-Za-z0-9'_\-\.]/", '-', $title);
+                    $title = preg_replace('/\-+/', '-', $title);
+                    $title = preg_replace('/^-+/', '', $title);
+                    $title = preg_replace('/-+$/', '', $title);
+                }
 	} else {
 		$title = $term;
 	}
@@ -112,6 +114,12 @@ register_activation_hook(__FILE__, 'cal_schedule_conversion');
 function cal_use_cyrillic_alias($request){
 	if (isset($request['name'])){
 		$request['name'] = cal_sanitize_title(urldecode($request['name']));
+	}
+	if (isset($request['category_name'])){
+		$request['category_name'] = cal_sanitize_title(urldecode($request['category_name']),true);
+	}
+	if (isset($request['tag'])){
+		$request['tag'] = cal_sanitize_title(urldecode($request['tag']));
 	}
     return $request;
 }
